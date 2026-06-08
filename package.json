@@ -1,0 +1,22 @@
+{
+  "name": "ai-code-assistant",
+  "version": "1.0.0",
+  "description": "AI-Powered Code Assistant Dashboard - 前端+AI实习项目",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "backend": "cd backend && mvn spring-boot:run",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "keywords": [
+    "vue",
+    "spring-boot",
+    "ai",
+    "code-assistant",
+    "copilot"
+  ],
+  "author": "internship-project",
+  "license": "MIT"
+}

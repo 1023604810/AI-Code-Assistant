@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ai-code-assistant-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: ai_code_assistant
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devpass123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ai-network
+
+  backend:
+    build: ./backend
+    container_name: ai-code-assistant-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ai_code_assistant
+      SPRING_DATASOURCE_USERNAME: devuser
+      SPRING_DATASOURCE_PASSWORD: devpass123
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-your-api-key-here}
+    depends_on:
+      - mysql
+    networks:
+      - ai-network
+
+  frontend:
+    build: ./frontend
+    container_name: ai-code-assistant-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - ai-network
+
+volumes:
+  mysql_data:
+
+networks:
+  ai-network:
+    driver: bridge
